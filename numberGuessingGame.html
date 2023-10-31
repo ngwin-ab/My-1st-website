@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Number Guessing Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Limelight&family=Montserrat:wght@600&family=Roboto+Slab&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        table {
+            background-color: #555f79;
+            color: white;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-size: large;
+            border: 4px;
+        }
+
+        table td {
+            height: 20px;
+            padding: 10px;
+        }
+
+        #row2a,
+        #row2b,
+        #row3,
+        #row4,
+        #row4b {
+            text-align: center;
+        }
+
+        #row3 {
+            width: 250px;
+        }
+
+        #userGuessField {
+            margin-top: 10px;
+            font-size: large;
+            /* text-align: center; */
+        }
+
+        button {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-weight: bold;
+            font-size: 15px;
+            background-color: #f1df3a;
+            color: black;
+            width: 80px;
+            height: 30px;
+            margin: 3px;
+            display: inline-block;
+
+        }
+
+
+        #col3 {
+            width: 120px;
+        }
+
+        #userGuessField {
+            margin-top: 10px;
+            font-size: large;
+            /* text-align: center; */
+        }
+
+        button {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-weight: bold;
+            font-size: 15px;
+            background-color: #f1df3a;
+            color: black;
+            width: 80px;
+            height: 30px;
+            margin: 3px;
+            display: inline-block;
+
+        }
+
+
+        img {
+            width: 170px;
+            padding-right: 5px;
+            /* display: block;
+            margin-left: auto;
+            margin-right: auto; */
+        }
+    </style>
+    <script>
+        // initializing fields in the game
+        // let theNumber = Math.floor(Math.random()*(upperLimit - lowerLimit)+lowerLimit);
+        let theNumber = 87;
+        let turnTotal = 5;
+        let upperLimit;
+        let lowerLimit;
+        // let guessTotal = 0
+
+        function setupGame() {
+            upperLimit = 100;
+            lowerLimit = 1;
+            document.getElementById("upperField").innerHTML = upperLimit;
+            document.getElementById("lowerField").innerHTML = lowerLimit;
+            document.getElementById("turnTotal").innerHTML = turnTotal;
+            // document.getElementById("guessTotal").innerHTML = guessTotal;
+        }
+
+        // update the number of guessess after each time pressing submit button
+        // function updateNumberOfGuesses() {
+        //     document.getElementById('guessTotal').innerHTML++;
+        // }
+
+        // update the number of turns remained
+        function updateNumberOfTurns() {
+            document.getElementById('turnTotal').innerHTML--;
+        }
+
+        //run the submit logic
+        function submitGuess() {
+            //update the number of guesses and turns
+            // updateNumberOfGuesses();
+            updateNumberOfTurns();
+
+            // validate if what user typed in is number
+            let userGuess = document.getElementById("userGuessField").value;
+            if (isNaN(userGuess)) {
+                document.getElementById("feedback").innerHTML = "That is NOT a number!"
+            }
+
+            else if (userGuess && userGuess.value != " ") {
+                //check if our guess is the right answer. Provide feedback (alert boxes) to the user.
+                //Hint:  You can "nest" if statements
+                //if (userGuess == ????)
+                //{
+                //do something
+                //}
+
+                if (userGuess > theNumber) {
+                    if (userGuess > 100) {
+                        document.getElementById("feedback").innerHTML = "Out of range!";
+                    }
+                    else {
+                        let upperLimit = userGuess;
+                        document.getElementById("upperField").innerHTML = upperLimit;
+                        document.getElementById("feedback").innerHTML = "The number is lower <br> than " + userGuess + ".";
+                    }
+
+                }
+                else if (userGuess < theNumber) {
+                    if (userGuess > 0) {
+                        let lowerLimit = userGuess;
+                        document.getElementById("lowerField").innerHTML = lowerLimit;
+                        document.getElementById("feedback").innerHTML = "The number is higher <br> than " + userGuess + ".";
+                    }
+                    else {
+                        document.getElementById("feedback").innerHTML = "Out of range!";
+                    }
+                }
+                else if (userGuess == theNumber) {
+                    document.getElementById("feedback").innerHTML = "CORRECT!!!"
+                    document.getElementById("mainImg").src = "img/win.png";
+                    document.getElementById("btn1").disabled = true;
+                    document.getElementById("btn2").disabled = true;
+                }
+            }
+
+            else {
+                document.getElementById("feedback").innerHTML = "Please enter a number between 1 and 100!";
+            }
+
+            // stop the game when no turns left
+            if (document.getElementById('turnTotal').innerHTML == "0" && userGuess != theNumber) {
+                document.getElementById("mainImg").src = "img/gameover.png";
+                document.getElementById("feedback").innerHTML = "You've run out turns! <br> The number is 87!";
+                document.getElementById("btn1").disabled = true;
+                document.getElementById("btn2").disabled = true;
+            }
+        }
+
+        //reset the setup when the reset button is clicked
+        function resetGame() {
+            location.reload();
+        }
+
+        // clear the guess and feedback field when pressing Clear Btn
+        function clearGuess() {
+            document.getElementById("userGuessField").value = '';
+            document.getElementById("userGuessField").focus();
+            document.getElementById("feedback").innerHTML = '';
+        }
+    </script>
+
+</head>
+
+<body onload="setupGame()">
+    <div id="page-container">
+        <!-- Start of header -->
+        <header>
+            <nav>
+                <a href="index.html" class="logo">ABN</a>
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="numberGuessingGame.html" class="active">GAME</a></li>
+                    <li><a href="bankSimulator.html">BANK ACCOUNT</a></li>
+                    <li><a href="contact.html">CONTACT</a></li>
+                </ul>
+                <div class="logBtn"><a href="login.html">Login</a></div>
+                <!-- <button class="logBtn"><a href="login.html">Login</a></button> -->
+            </nav>
+        <!-- End header -->
+        </header>
+        <br>
+        <br>
+        <div class="game">
+            <center>
+                <h2>Let's see if you're lucky today!</h2>
+                <br>
+                <!-- <div class="box"> -->
+                <table border="2">
+                    <tr>
+                        <td id="row1" colspan="2">Number is between
+                            <span id="lowerField"></span> and <span id="upperField"></span>
+                        </td>
+                        <td id="col3" rowspan="3"><img id="mainImg" src="img/what.png"></td>
+                    </tr>
+                    <tr>
+                        <td id="row2a">Enter a guess:
+                            <div><input size="3" maxlength="3" id="userGuessField"></div>
+                        </td>
+                        <td id="row2b">
+                            <button id="btn1" onclick="submitGuess()">SUBMIT</button><button id="btn2"
+                                onclick="clearGuess()">CLEAR</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="row3" colspan="2" class="feedback"><span id="feedback"></span></td>
+                    </tr>
+                    <tr>
+                        <td id="row4" colspan="2">
+                            <!-- <div>Guesses made: <span id="guessTotal"></span></div> -->
+                            <div>Remaining turns: <span id="turnTotal"></span></div>
+                        </td>
+                        <td id="row4b"><button onclick="resetGame()">RESET</button></td>
+                    </tr>
+                </table>
+                <!-- </div> -->
+            </center>
+        </div>
+
+        <!--  FOOTER START -->
+        <footer>
+            <div class="social-icons">
+                <ul>
+                    <li><a class="facebook" href="https://www.facebook.com/CuteOverrated/"><i class="fa fa-facebook"></i></a></li>
+                    <li><a class="twitter" href="https://twitter.com/ANIMALPlCTURES"><i class="fa fa-twitter"></i></a></li>
+                    <li><a class="instagram" href="https://www.instagram.com/rescuepetsofinstagram/?hl=en"><i class="fa fa-instagram"></i></a></li>
+                </ul>
+            </div>
+
+            <div class="links">
+                <ul>
+                    <li><a href="#">HOME</a></li>
+                    <li><a href="#">SITEMAP</a></li>
+                    <li><a href="#">ABOUT</a></li>
+                    <li><a href="#">CONTACT</a></li>
+                </ul>
+            </div>
+            <hr>
+            <div id="copyright-text">
+                <p>Copyright &copy; 2023 All Rights Reserved by ABN_Final Project</p>
+            </div>
+        <!--   FOOTER END -->
+        </footer>
+    </div>
+</body>
+
+</html>
